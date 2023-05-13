@@ -1,0 +1,117 @@
+[
+  {
+    "pattern": "**/*.js",
+    "path": "/path/to/test/folder/app.js",
+    "should_match": true
+  },
+  {
+    "pattern": "**/node_modules/**/*.js",
+    "path": "/path/to/test/folder/node_modules/test.js",
+    "should_match": true
+  },
+  {
+    "pattern": "**/.*",
+    "path": "/path/to/test/folder/.gitignore",
+    "should_match": true
+  },
+  {
+    "pattern": "*.txt",
+    "path": "example.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "*.txt",
+    "path": "example.png",
+    "should_match": false
+  },
+  {
+    "pattern": "subdir/*.txt",
+    "path": "subdir/example.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "subdir/*.txt",
+    "path": "subdir/example.png",
+    "should_match": false
+  },
+  {
+    "pattern": "subdir/**/*.txt",
+    "path": "subdir/example.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "subdir/**/*.txt",
+    "path": "subdir/subsubdir/example.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "subdir/**/*.txt",
+    "path": "subdir/example.png",
+    "should_match": false
+  },
+  {
+    "pattern": "prefix-[0-9]*.txt",
+    "path": "prefix-123.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "prefix-[0-9]*.txt",
+    "path": "prefix-abc.txt",
+    "should_match": false
+  },
+  {
+    "pattern": "prefix-[a-z]*.txt",
+    "path": "prefix-abc.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "prefix-[a-z]*.txt",
+    "path": "prefix-123.txt",
+    "should_match": false
+  },
+  {
+    "pattern": "src/**/*.go",
+    "path": "src/main.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/*.go",
+    "path": "src/controllers/user_controller.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/*/*_test.go",
+    "path": "src/repositories/user_repository_test.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/*_test.go",
+    "path": "src/controllers/user_controller_test.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/models/*.go",
+    "path": "src/models/user.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/models/*.go",
+    "path": "src/controllers/user_controller.go",
+    "should_match": false
+  },
+  {
+    "pattern": "src/**/*.txt",
+    "path": "src/docs/sample.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/*.txt",
+    "path": "src/assets/sample.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/*.txt",
+    "path": "src/controllers/user_controller.go",
+    "should_match": false
+  }
+]
