@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mxmauro/FastGlobbing"
+	"github.com/mxmauro/FastGlobbing/v2"
 )
 
 // -----------------------------------------------------------------------------
@@ -18,6 +18,8 @@ type GitWildcardMatchTest struct {
 	Path        string `json:"path"`
 	ShouldMatch bool   `json:"should_match"`
 }
+
+// -----------------------------------------------------------------------------
 
 func TestGitWildcardMatch(t *testing.T) {
 	data, err := os.ReadFile("./testdata/gitwildcardmatch_test.json")
@@ -32,23 +34,16 @@ func TestGitWildcardMatch(t *testing.T) {
 	}
 
 	if runtime.GOOS == "windows" {
-		// On Windows, convert paths
+		// On Windows, convert paths to the native separator. Patterns keep gitignore-style '/' separators.
 		for idx := range tests {
 			s := filepath.FromSlash(tests[idx].Path)
 			if strings.HasPrefix(s, "\\") {
 				s = "C:" + s
 			}
 			tests[idx].Path = filepath.FromSlash(s)
-
-			s = filepath.FromSlash(tests[idx].Pattern)
-			if strings.HasPrefix(s, "\\") {
-				s = "C:" + s
-			}
-			tests[idx].Pattern = filepath.FromSlash(s)
 		}
 	}
 
-	// Print the list of tests
 	for _, test := range tests {
 		glob := FastGlobbing.NewGitWildcardMatcher(test.Pattern)
 
@@ -62,5 +57,40 @@ func TestGitWildcardMatch(t *testing.T) {
 			}
 			t.Fatalf("Failed to %s pattern '%s' with path '%s'.", s, test.Pattern, test.Path)
 		}
+	}
+}
+
+func TestGitWildcardMatcherDirectCall(t *testing.T) {
+	glob := FastGlobbing.NewGitWildcardMatcher("a")
+	if !glob.Test("x/y/a") {
+		t.Fatal("Expected direct matcher call to match the final path component.")
+	}
+}
+
+func TestGitWildcardLiteralCharacterClasses(t *testing.T) {
+	glob := FastGlobbing.NewGitWildcardMatcher("a[?]b")
+	if !glob.Test("a?b") {
+		t.Fatal("Expected character class to match a literal '?'.")
+	}
+	if glob.Test("axb") {
+		t.Fatal("Expected literal '?' matcher not to behave like '?'.")
+	}
+
+	glob = FastGlobbing.NewGitWildcardMatcher("a[*]b")
+	if !glob.Test("a*b") {
+		t.Fatal("Expected character class to match a literal '*'.")
+	}
+	if glob.Test("axb") {
+		t.Fatal("Expected literal '*' matcher not to behave like '*'.")
+	}
+
+	glob = FastGlobbing.NewGitWildcardMatcher("a[[]b")
+	if !glob.Test("a[b") {
+		t.Fatal("Expected character class to match a literal '['.")
+	}
+
+	glob = FastGlobbing.NewGitWildcardMatcher("a[]]b")
+	if !glob.Test("a]b") {
+		t.Fatal("Expected character class to match a literal ']'.")
 	}
 }

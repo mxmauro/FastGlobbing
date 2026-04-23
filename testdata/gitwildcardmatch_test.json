@@ -25,6 +25,51 @@
     "should_match": false
   },
   {
+    "pattern": "a",
+    "path": "x/y/a",
+    "should_match": true
+  },
+  {
+    "pattern": "a",
+    "path": "a/a/b",
+    "should_match": false
+  },
+  {
+    "pattern": "dir/file.txt",
+    "path": "dir/file.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "dir\\file.txt",
+    "path": "dir/file.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "build/",
+    "path": "build",
+    "should_match": true
+  },
+  {
+    "pattern": "build/",
+    "path": "build/output.txt",
+    "should_match": false
+  },
+  {
+    "pattern": "build/",
+    "path": "src/build/output.txt",
+    "should_match": false
+  },
+  {
+    "pattern": "build/**",
+    "path": "build/output.txt",
+    "should_match": true
+  },
+  {
+    "pattern": "build/**",
+    "path": "build/subdir/output.txt",
+    "should_match": true
+  },
+  {
     "pattern": "subdir/*.txt",
     "path": "subdir/example.txt",
     "should_match": true
@@ -98,6 +143,41 @@
     "pattern": "src/**/models/*.go",
     "path": "src/controllers/user_controller.go",
     "should_match": false
+  },
+  {
+    "pattern": "**",
+    "path": "src/controllers/user_controller.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**",
+    "path": "src",
+    "should_match": false
+  },
+  {
+    "pattern": "src/**",
+    "path": "src/controllers/user_controller.go",
+    "should_match": true
+  },
+  {
+    "pattern": "**/models/*.go",
+    "path": "src/models/user.go",
+    "should_match": true
+  },
+  {
+    "pattern": "**/models/*.go",
+    "path": "src/controllers/models/user.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/controllers/**",
+    "path": "src/controllers/user_controller.go",
+    "should_match": true
+  },
+  {
+    "pattern": "src/**/controllers/**",
+    "path": "src/api/v1/controllers/user_controller.go",
+    "should_match": true
   },
   {
     "pattern": "src/**/*.txt",

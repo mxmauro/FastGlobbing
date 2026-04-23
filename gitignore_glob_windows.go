@@ -1,18 +1,24 @@
 package FastGlobbing
 
 import (
-	"os"
 	"unicode"
 )
 
 // -----------------------------------------------------------------------------
 
-func (m *GitWildcardMatcher) perOsInit() {
-	for idx := range m.patternRunes {
-		if m.patternRunes[idx] != '/' {
-			m.patternRunes[idx] = unicode.ToUpper(m.patternRunes[idx])
-		} else {
-			m.patternRunes[idx] = os.PathSeparator
-		}
+func (m *GitWildcardMatcher) normalizePattern() {
+	for idx := range m.pattern {
+		m.pattern[idx] = normalizeRune(m.pattern[idx])
 	}
+}
+
+func isPathSeparator(r rune) bool {
+	return r == '/' || r == '\\'
+}
+
+func normalizeRune(r rune) rune {
+	if isPathSeparator(r) {
+		return '/'
+	}
+	return unicode.ToUpper(r)
 }
